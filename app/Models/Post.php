@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -12,7 +13,8 @@ class Post extends Model
 
     protected $fillable = [
         'title',
-        'content'
+        'content',
+        'image'
     ];
 
     public function getCreatedAt() : String
@@ -23,5 +25,10 @@ class Post extends Model
     public function excerptContent() : string
     {
         return substr($this->content, 0, 1000) . '....';
+    }
+
+    public function imageUrl() : string
+    {
+        return Storage::url($this->image);
     }
 }

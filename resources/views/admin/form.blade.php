@@ -1,33 +1,56 @@
+@extends('layout')
 
-<div class="card-body my-4">
-    <form action="" method="post" class="form-group">
-        @csrf
-        @method($post->id ? "PATCH" : "POST")
+@section('content')
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>{{ $post->id ? 'Modification de l\'article' : 'Création d\'un nouvel article' }}</h1>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ $post->id ? route('admin.update', $post->id) : route('admin.store') }}"
+                            method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method($post->id ? 'PATCH' : 'POST')
 
-        <div>
-            <label for="title">Title</label>
-            <input class="form-control" type="text" name="title" id="title" value="{{ old('title', $post->title) }}">
-            @error('title')
-                {{ $message }}
-            @enderror
+                            <!-- Champ Titre -->
+                            <div class="form-group">
+                                <label for="title">Titre</label>
+                                <input class="form-control @error('title') is-invalid @enderror" type="text"
+                                    name="title" id="title" value="{{ old('title', $post->title) }}">
+                                @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Champ Contenu -->
+                            <div class="form-group">
+                                <label for="content">Contenu</label>
+                                <textarea class="form-control @error('content') is-invalid @enderror" rows="10" name="content" id="content">{{ old('content', $post->content) }}</textarea>
+                                @error('content')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Champ Image -->
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input class="form-control @error('image') is-invalid @enderror" type="file"
+                                    name="image" id="image">
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Bouton Soumettre -->
+                            <button type="submit" class="btn btn-primary my-3">
+                                {{ $post->id ? 'Mettre à jour l\'article' : 'Créer un nouvel article' }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div>
-            <label for="content">Content</label>
-            <textarea name="content" id="content" rows="8" class="form-control">{{ old('content', $post->content) }}</textarea>
-            @error('content')
-                {{ $message }}
-            @enderror
-        </div>
-
-        <div>
-            <button type="submit" class="btn btn-primary">
-                @if ($post->id)
-                    Modifier l'article
-                @else 
-                    Creer un nouvel article
-                @endif
-                Creer un nouvel article
-            </button>
-        </div>
-    </form>
+    </div>
+@endsection

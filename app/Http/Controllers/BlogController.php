@@ -7,22 +7,22 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function welcome()
-    {
-        return view('blog.welcome');
-    }
+     public function welcome()
+     {
+          return view('blog.welcome');
+     }
 
-   public function index()
-   {
-        $posts = (new Post())->all();
+     public function index()
+     {
+          $posts = (new Post())->all();
 
-        return view('blog.index', compact('posts'));
-   }
+          return view('blog.index', compact('posts'));
+     }
 
-   public function show(int $id)
-   {
-        $posts = (new Post())->find($id);
+     public function show(int $id)
+     {
+          $posts = (new Post())->find($id);
 
-        return view('blog.show', compact('posts'));
-   }
+          return view('blog.show', compact('posts'));
+     }
 }
